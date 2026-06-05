@@ -6,22 +6,26 @@ const notifications = [
   { id: 5, type: "event", unread: false, timestamp: 500 }
 ];
 
-function getWeight(type) {
+function getPriority(type) {
   if (type === "placement") return 3;
   if (type === "result") return 2;
   return 1;
 }
 
-const top10 = notifications
-  .filter(n => n.unread)
-  .sort((a, b) => {
-    const weightDiff = getWeight(b.type) - getWeight(a.type);
+function getTopNotifications(data) {
+  return data
+    .filter(n => n.unread)
+    .sort((a, b) => {
+      const priorityDiff =
+        getPriority(b.type) - getPriority(a.type);
 
-    if (weightDiff !== 0) return weightDiff;
+      if (priorityDiff !== 0)
+        return priorityDiff;
 
-    return b.timestamp - a.timestamp;
-  })
-  .slice(0, 10);
+      return b.timestamp - a.timestamp;
+    })
+    .slice(0, 10);
+}
 
 console.log("Top Priority Notifications:");
-console.log(top10);
+console.log(getTopNotifications(notifications));

@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifications</title>
+</head>
+<body>
+
+<h1>Top Notifications</h1>
+
+<ul id="list"></ul>
+
+<script>
+
+const notifications = [
+    {id:1,type:"placement",unread:true,timestamp:100},
+    {id:2,type:"event",unread:true,timestamp:200},
+    {id:3,type:"result",unread:true,timestamp:150},
+    {id:4,type:"placement",unread:true,timestamp:300}
+];
+
+function priority(type){
+    if(type==="placement") return 3;
+    if(type==="result") return 2;
+    return 1;
+}
+
+const topNotifications = notifications
+.filter(n=>n.unread)
+.sort((a,b)=>{
+    const p = priority(b.type)-priority(a.type);
+
+    if(p!==0) return p;
+
+    return b.timestamp-a.timestamp;
+});
+
+const list = document.getElementById("list");
+
+topNotifications.forEach(n=>{
+    const li = document.createElement("li");
+
+    li.innerHTML =
+        `Type: ${n.type}
+         Timestamp: ${n.timestamp}`;
+
+    list.appendChild(li);
+});
+
+</script>
+
+</body>
+</html>
